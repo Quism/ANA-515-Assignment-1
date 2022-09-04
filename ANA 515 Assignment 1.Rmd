@@ -1,0 +1,54 @@
+---
+title: "ANA 515 Assignment 1"
+author: "Gyu Hyun Byun"
+date: "2022-09-03"
+output: 
+  html_document:
+    theme:
+      bootswatch: superhero
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(bslib)
+```
+
+```{r, include=FALSE}
+gun_deaths = read.csv("https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv")
+```
+
+```{r, include = FALSE}
+install.packages("tidyverse")
+install.packages("knitr")
+install.packages("bslib")
+youth <- gun_deaths %>% 
+  filter(age <=65)
+```
+
+```{r, include = FALSE}
+summary (youth)
+```
+
+We have data about `r nrow(gun_deaths)` individuals killed by guns. Only `r nrow(gun_deaths) - nrow(youth)` are older than 65. The distribution of the remainder is shown below:
+
+# Gun deaths by age
+
+```{r youth-dist, echo = FALSE}
+youth %>% 
+  ggplot(aes(age)) + 
+  geom_freqpoly(binwidth = 1)
+```
+
+# Gun deaths by race
+
+```{r race-dist, echo = FALSE}
+youth %>% 
+ggplot(aes(fct_infreq(race) %>% fct_rev())) + 
+geom_bar() + coord_flip() + 
+labs(x = "Victim race") 
+```
